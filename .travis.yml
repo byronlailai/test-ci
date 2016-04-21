@@ -7,7 +7,18 @@ notifications:
 jdk:
   - openjdk7
   
-  before_script: 
+cache:
+  directories:
+    - $HOME/.m2/repository
+
+before_install:
+  - wget -P lib https://modus.nexus:qU17lsojcn1d@repository.mulesoft.org/nexus/content/repositories/releases-ee/com/mulesoft/muleesb/mule-core-ee/3.7.3/mule-core-ee-3.7.3.jar
+  - mvn validate
+
+before_script: 
   - echo TRAVIS_BUILD_NUMBER= $TRAVIS_BUILD_NUMBER
   - echo BUILD_INFO= $BUILD_INFO
   - echo DEPL_ENV= $DEPL_ENV
+  
+script: 
+  - mvn -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true 
