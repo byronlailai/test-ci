@@ -1,7 +1,5 @@
 language: java
 
-mvn install -DskipTests=true
-
 notifications:
   email:
     - byronlai@yahoo.com
