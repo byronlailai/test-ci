@@ -95,9 +95,7 @@
                 <configuration>
                     <coverage>
                         <runCoverage>true</runCoverage>
-                        <formats>
-                            <format>html</format>
-                        </formats>
+                        <failBuild>true</failBuild>
                     </coverage>
                 </configuration>
             </plugin>

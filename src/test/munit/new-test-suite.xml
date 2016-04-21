@@ -14,28 +14,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     	<spring:import resource="classpath:second.xml"/>
     	
     </spring:beans>
-	<munit:config doc:name="Munit configuration" mock-connectors="false" mock-inbounds="false"/>	
-
-    
-    <munit:before-test name="setup-process" description="Before tests actions">
-        <dw:transform-message doc:name="Transform Message">
-            <dw:set-session-variable variableName="inboundHeaders"><![CDATA[%dw 1.0
-%output application/java
----
-{
-	api-headers: {
-		api-country: "en",
-		api-lang: "en",
-		api-transaction-id: "fb1c52f5-88af-2ba1-aed7-0d75352fb8dc",
-		api-cache-key: "c672b8d1ef56ed28ab87c3622c5114069bdd3ad7b8f9737498d0c01ecef0967a",
-		api-organisation: "bvb",
-		api-transaction-timestamp: "2016-11-25T08:20:32.456+01:00" as :datetime {format: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"},
-		api-message-id: "b23u1e6s-e32k-34a1-aed7-0d75354gh1dc"
-	}
-}]]></dw:set-session-variable>
-           
-        </dw:transform-message>
-    </munit:before-test>
+	<munit:config doc:name="Munit configuration" mock-connectors="false" mock-inbounds="false"/>
     
     <munit:test name="test-1" description="Test1">
         <choice doc:name="Choice">
