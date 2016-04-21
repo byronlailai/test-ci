@@ -46,3 +46,8 @@ local.properties
 flows/
 target/
 **/*.mflow
+.mule/objectstore/1442c820-075e-11e6-97d9-7ee1402bd937/partition-descriptor
+.mule/queue-tx-log/tx1.log
+.mule/queue-tx-log/tx2.log
+.mule/queue-xa-tx-log/tx1.log
+.mule/queue-xa-tx-log/tx2.log

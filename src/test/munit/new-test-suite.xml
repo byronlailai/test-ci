@@ -1,13 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-    <munit:config name="munit" doc:name="MUnit configuration"/>
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
     <spring:beans>
-        <spring:import resource="classpath:main.xml"/>
+    	<spring:import resource="classpath:main.xml"/>
+    	<spring:import resource="classpath:second.xml"/>
+    	
     </spring:beans>
-    <munit:test name="new-test-suite-mainFlowTest" description="Test">
-        <flow-ref name="mainFlow" doc:name="Flow-ref to mainFlow"/>
+	<munit:config doc:name="Munit configuration" mock-connectors="false" mock-inbounds="false"/>	
+
+    
+    <munit:before-test name="setup-process" description="Before tests actions">
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-session-variable variableName="inboundHeaders"><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	api-headers: {
+		api-country: "en",
+		api-lang: "en",
+		api-transaction-id: "fb1c52f5-88af-2ba1-aed7-0d75352fb8dc",
+		api-cache-key: "c672b8d1ef56ed28ab87c3622c5114069bdd3ad7b8f9737498d0c01ecef0967a",
+		api-organisation: "bvb",
+		api-transaction-timestamp: "2016-11-25T08:20:32.456+01:00" as :datetime {format: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"},
+		api-message-id: "b23u1e6s-e32k-34a1-aed7-0d75354gh1dc"
+	}
+}]]></dw:set-session-variable>
+           
+        </dw:transform-message>
+    </munit:before-test>
+    
+    <munit:test name="test-1" description="Test1">
+        <choice doc:name="Choice">
+            <when expression="true">
+                <munit:set payload="{name:1}" doc:name="Set Message"/>
+                <logger message="payload: #[payload], message = #[message]" level="WARN" doc:name="test-post-notify-sms-202::START"/>
+                <flow-ref name="mainFlow" doc:name="mainFlow"/>
+                <logger message="#[message]" level="INFO" doc:name="Logger"/>
+                <munit:assert-on-equals message="Outbound HTTP Status Code Match Failure" expectedValue="202" actualValue="202" doc:name="Assert Equals - http.status"/>
+                <logger message="payload: #[payload], message = #[message]" level="WARN" doc:name="test-post-notify-sms-202::END"/>
+            </when>
+            <otherwise>
+                <munit:assert-true message="Not HTTP 202" condition="#[true]" doc:name="Assert True"/>
+            </otherwise>
+        </choice>
     </munit:test>
+    
+    <munit:test name="test-2" description="Test2">
+        <choice doc:name="Choice">
+            <when expression="true">
+                <munit:set payload="{name:1}" doc:name="Set Message"/>
+                <logger message="payload: #[payload], message = #[message]" level="WARN" doc:name="test-post-notify-sms-202::START"/>
+                <flow-ref name="mainFlow" doc:name="mainFlow"/>
+                <logger message="#[message]" level="INFO" doc:name="Logger"/>
+                <munit:assert-on-equals message="Outbound HTTP Status Code Match Failure" expectedValue="202" actualValue="203" doc:name="Assert Equals - http.status"/>
+                <logger message="payload: #[payload], message = #[message]" level="WARN" doc:name="test-post-notify-sms-202::END"/>
+            </when>
+            <otherwise>
+                <munit:assert-true message="Not HTTP 202" condition="#[true]" doc:name="Assert True"/>
+            </otherwise>
+        </choice>
+    </munit:test>
+
 </mule>
