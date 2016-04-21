@@ -6,8 +6,8 @@ notifications:
     
 jdk:
   - openjdk7
-  
-  before_script: 
+
+before_script: 
   - echo TRAVIS_BUILD_NUMBER= $TRAVIS_BUILD_NUMBER
   - echo BUILD_INFO= $BUILD_INFO
   - echo DEPL_ENV= $DEPL_ENV
