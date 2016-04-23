@@ -81,25 +81,25 @@
 				</executions>
 			</plugin>
 		<plugin>
-                <groupId>com.mulesoft.munit.tools</groupId>
-                <artifactId>munit-maven-plugin</artifactId>
-                <version>${munit.version}</version>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <phase>test</phase>
-                    <goals>
-                        <goal>install-file</goal>
-                    <goals>
-                    </execution>
-                </executions>
-                <configuration>
+      <groupId>com.mulesoft.munit.tools</groupId>
+      <artifactId>munit-maven-plugin</artifactId>
+      <version>${munit.version}</version>
+      <executions>
+        <execution>
+          <id>test</id>
+          <phase>test</phase>
+          <goals>
+            <goal>test</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
                     <coverage>
                         <runCoverage>true</runCoverage>
                         <failBuild>true</failBuild>
                     </coverage>
                 </configuration>
-            </plugin>
+    </plugin>
         </plugins>
 	<testResources>
             <testResource>
