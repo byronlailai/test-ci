@@ -12,8 +12,7 @@ cache:
     - $HOME/.m2/repository
 
 before_install:
-  - wget -P lib https://modus.nexus:qU17lsojcn1d@repository.mulesoft.org/nexus/content/repositories/releases-ee/com/mulesoft/muleesb/mule-core-ee/3.7.3/mule-core-ee-3.7.3.jar
-  - mvn validate
+  - mv settings.xml $HOME/.m2/settings.xml
 
 before_script: 
   - echo TRAVIS_BUILD_NUMBER= $TRAVIS_BUILD_NUMBER
