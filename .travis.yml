@@ -13,6 +13,7 @@ cache:
 
 before_install:
   - mv settings.xml $HOME/.m2/settings.xml
+  - ls -a $HOME/.m2/settings.xml
 
 before_script: 
   - echo TRAVIS_BUILD_NUMBER= $TRAVIS_BUILD_NUMBER
