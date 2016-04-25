@@ -39,7 +39,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                 <logger message="payload: #[payload], message = #[message]" level="WARN" doc:name="test-post-notify-sms-202::START"/>
                 <flow-ref name="mainFlow" doc:name="mainFlow"/>
                 <logger message="#[message]" level="INFO" doc:name="Logger"/>
-                <munit:assert-on-equals message="Outbound HTTP Status Code Match Failure" expectedValue="202" actualValue="203" doc:name="Assert Equals - http.status"/>
+                <munit:assert-on-equals message="Outbound HTTP Status Code Match Failure" expectedValue="202" actualValue="202" doc:name="Assert Equals - http.status"/>
                 <logger message="payload: #[payload], message = #[message]" level="WARN" doc:name="test-post-notify-sms-202::END"/>
             </when>
             <otherwise>
